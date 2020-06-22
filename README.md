@@ -20,7 +20,7 @@ sudo apt install gnuradio
 
 ### gr-mapper包
 
-gr-mapper用于实现模拟调制信号生成，需要从源码编译。参考[GitHub地址](https://github.com/gr-vt/gr-mapper)
+gr-mapper用于实现BPSK，QAM等数字调制信号生成，需要从源码编译。参考[GitHub地址](https://github.com/gr-vt/gr-mapper)
 
 ## 数据准备
 
