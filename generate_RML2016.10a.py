@@ -4,7 +4,7 @@ from source_alphabet import source_alphabet
 import analyze_stats
 from gnuradio import channels, gr, blocks
 import numpy as np
-import numpy.fft, cPickle, gzip
+import numpy.fft, cPickle, gzip, json
 import random
 
 '''
@@ -74,6 +74,7 @@ for snr in snr_vals:
               if modvec_indx == nvecs_per_key:
                   # we're all done
                   insufficient_modsnr_vectors = False
+
 
 print "all done. writing to disk"
 cPickle.dump( dataset, file("RML2016.10a_dict.dat", "wb" ) )
