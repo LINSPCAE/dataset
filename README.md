@@ -27,6 +27,7 @@ gr-mapper用于实现模拟调制信号生成，需要从源码编译。参考[G
 由于gr-mediatools包年久失修，现在无法和[原案例](https://github.com/radioML/source_material)一样直接读取.mp3文件，因此需要将用于FM调制的.mp3音频文件转换为.wav文件。
 
 ## dataset生成脚本
+脚本名为“generate_RML2016.10a.py”
 
 针对上述.mp3转换为.wav的问题，我对原生成脚本进行了相应修改，使其可以读取.wav文件。修改后的代码托管在[此处](https://github.com/LINSPCAE/dataset)。
 
