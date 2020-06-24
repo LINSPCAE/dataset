@@ -43,4 +43,4 @@ import pickle
 Xd = pickle.load(open("RML2016.10a_dict.dat","rb"),encoding="bytes")
 ```
 
-机器学习部分内容可以参照[原例](https://github.com/radioML/examples/blob/master/modulation_recognition/RML2016.10a_VTCNN2_example.ipynb)（基于python2+theano+keras）修改。本文不做展示啦。
+机器学习部分内容可以参照[原例](https://github.com/radioML/examples/blob/master/modulation_recognition/RML2016.10a_VTCNN2_example.ipynb)（基于python2+theano+keras）修改。本文不做展示。
