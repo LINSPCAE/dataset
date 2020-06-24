@@ -152,9 +152,9 @@ if __name__ == "__main__": # for debug
     mod = transmitter_am()
     snk = blocks.vector_sink_c()
     snk2 = blocks.vector_sink_c()
+
     tb = gr.top_block()
     tb.connect(src, mod, snk)
-
     tb.run()
 
     print "done"
