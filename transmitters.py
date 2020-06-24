@@ -4,6 +4,7 @@ from scipy.signal import get_window
 from gnuradio import gr, blocks, digital, analog, filter
 from gnuradio.filter import firdes
 import mapper
+from source_alphabet import source_alphabet
 sps = 8
 ebw = 0.35
 
@@ -105,8 +106,9 @@ class transmitter_am(gr.hier_block2):
         gr.io_signature(1, 1, gr.sizeof_float),
         gr.io_signature(1, 1, gr.sizeof_gr_complex))
         self.rate = 44.1e3/200e3
-        #self.rate = 200e3/44.1e3
-        self.interp = filter.fractional_interpolator_ff(0.0, self.rate)
+        # self.rate = 200e3/44.1e3
+        # self.interp = filter.fractional_interpolator_ff(0.0, self.rate) # legacy function
+        self.interp = filter.fractional_resampler_ff(0.0, self.rate)
         self.cnv = blocks.float_to_complex()
         self.mul = blocks.multiply_const_cc(1.0)
         self.add = blocks.add_const_cc(1.0)
@@ -124,7 +126,8 @@ class transmitter_amssb(gr.hier_block2):
         gr.io_signature(1, 1, gr.sizeof_gr_complex))
         self.rate = 44.1e3/200e3
         #self.rate = 200e3/44.1e3
-        self.interp = filter.fractional_interpolator_ff(0.0, self.rate)
+        # self.interp = filter.fractional_interpolator_ff(0.0, self.rate)
+        self.interp = filter.fractional_resampler_ff(0.0, self.rate)
 #        self.cnv = blocks.float_to_complex()
         self.mul = blocks.multiply_const_ff(1.0)
         self.add = blocks.add_const_ff(1.0)
@@ -141,3 +144,17 @@ transmitters = {
     "discrete":[transmitter_bpsk, transmitter_qpsk, transmitter_8psk, transmitter_pam4, transmitter_qam16, transmitter_qam64, transmitter_gfsk, transmitter_cpfsk],
     "continuous":[transmitter_fm, transmitter_am, transmitter_amssb]
     }
+
+
+if __name__ == "__main__": # for debug
+
+    src = source_alphabet('continuous', 1000, True)
+    mod = transmitter_am()
+    snk = blocks.vector_sink_c()
+    snk2 = blocks.vector_sink_c()
+    tb = gr.top_block()
+    tb.connect(src, mod, snk)
+
+    tb.run()
+
+    print "done"

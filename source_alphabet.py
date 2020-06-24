@@ -10,7 +10,7 @@ class source_alphabet(gr.hier_block2):
                 gr.io_signature(1,1,gr.sizeof_char))
 
             self.src = blocks.file_source(gr.sizeof_char, "source_material/gutenberg_shakespeare.txt")
-            self.convert = blocks.packed_to_unpacked_bb(1, gr.GR_LSB_FIRST);
+            self.convert = blocks.packed_to_unpacked_bb(1, gr.GR_LSB_FIRST)
             #self.convert = blocks.packed_to_unpacked_bb(8, gr.GR_LSB_FIRST);
             self.limit = blocks.head(gr.sizeof_char, limit)
             self.connect(self.src,self.convert)
@@ -31,9 +31,10 @@ class source_alphabet(gr.hier_block2):
                 gr.io_signature(0,0,0),
                 gr.io_signature(1,1,gr.sizeof_float))
 
-            self.src = blocks.wavfile_source("source_material/serial-s01-e01.wav", False)
-#            self.src = mediatools.audiosource_s(["source_material/serial-s01-e01.mp3"])
-#            self.convert2 = blocks.interleaved_short_to_complex()
+            self.src = blocks.wavfile_source("source_material/tensec_serial-s01-e01.wav", False)
+            # self.src.data() = self.src.data()[3000:-1]
+            # self.src = mediatools.audiosource_s(["source_material/serial-s01-e01.mp3"])
+            # self.convert2 = blocks.interleaved_short_to_complex()
             self.convert2 = blocks.float_to_complex()
             self.convert3 = blocks.multiply_const_cc(1.0/65535)
             self.convert = blocks.complex_to_float()
@@ -48,18 +49,21 @@ class source_alphabet(gr.hier_block2):
             self.connect(last, self.limit, self)
 
 
-if __name__ == "__main__":
+if __name__ == "__main__": # for debug
     print "QA..."
 
     # Test discrete source
-    tb = gr.top_block()
-    src = source_alphabet("discrete", 1000)
-    snk = blocks.vector_sink_b()
-    tb.run()
+    # tb = gr.top_block()
+    # src = source_alphabet("discrete", 1000)
+    # snk = blocks.vector_sink_b()
+    # tb.connect(src, snk)
+    # tb.run()
+    # print len(snk.data())
 
     # Test continuous source
     tb = gr.top_block()
     src = source_alphabet("continuous", 1000)
     snk = blocks.vector_sink_f()
+    tb.connect(src, snk)
     tb.run()
     print "over"
