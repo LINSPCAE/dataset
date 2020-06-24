@@ -10,10 +10,10 @@ WSL(Windows Subsystem for Linux) 可以理解为在Windows平台上分发的Linu
 
 ### GNURadio软件主体
 
-GNURadio软件主题可直接通过Ubuntu的包管理器apt安装，代码如下：
+GNURadio软件可直接通过Ubuntu的包管理器apt安装，代码如下：
 
 ```bash
-sudo apt install gnuradio
+sudo apt install gnuradio 
 ```
 
 确保安装的版本为gnuradio3.7
