@@ -22,7 +22,7 @@ dataset = {}
 # CIFAR-10 has 6000 samples/class. CIFAR-100 has 600. Somewhere in there seems like right order of magnitude
 nvecs_per_key = 1000
 vec_length = 128
-# snr_vals = range(-20,20,40)
+# snr_vals = range(-20,20,2)
 snr_vals = list([0])
 snr_vals.append(99) # indicating pure signal
 
