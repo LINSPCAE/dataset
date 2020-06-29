@@ -22,16 +22,18 @@ dataset = {}
 # CIFAR-10 has 6000 samples/class. CIFAR-100 has 600. Somewhere in there seems like right order of magnitude
 nvecs_per_key = 1000
 vec_length = 128
-# snr_vals = range(-20,20,2)
-snr_vals = list([0])
-snr_vals.append(99) # indicating pure signal
+snr_vals = range(-20,21,2)
+# snr_vals = list([]) # special signals
+snr_vals.extend([-99, 99])
 
 # Generate dataset on all snr_vals
 for snr in snr_vals:
     if snr == 99:
-        print "\nSaving pure signal (labeled as snr=99)"
+        print "\nSaving pure signal (labeled as snr=99)\n"
+    elif snr == -99:
+        print "\nSaving signal w/o noise (labeled as snr=-99)\n"
     else:
-        print "\nSNR is ", snr
+        print "\nSNR is ", snr, "\n"
     for alphabet_type in transmitters.keys():
         for i,mod_type in enumerate(transmitters[alphabet_type]):
             print "Modulating with {} ({} type)".format(mod_type.modname,alphabet_type)
@@ -51,7 +53,7 @@ for snr in snr_vals:
                 # decide modulation type
                 mod = mod_type()
                 # specify channel parameters
-                fD = 1
+                fD = 1  
                 delays = [0.0, 0.9, 1.7]
                 mags = [1, 0.8, 0.3]
                 ntaps = 8
@@ -61,10 +63,14 @@ for snr in snr_vals:
                 snk = blocks.vector_sink_c()
                 # create gnuradio topblock
                 tb = gr.top_block()
-                if snr == 99: # this is actually the pure signal without noise
+                if snr == 99: # this is actually the pure signal without noise or distortion
+                    # connect blocks and perform 1) bit generation; 2) modulation; 3) receive signal
+                    chan1 = channels.dynamic_channel_model( 200e3, 0, 0, 0, 0, 0, 0, True, 1, [0], [1], 1, 0, 0x1337 )
+                    tb.connect(src, mod, chan1, snk)
+                elif snr == -99: # this is signal without noise but with channel distortions
                     # new channel (with multipath and other distortions, but without noise)
                     chan2 = channels.dynamic_channel_model( 200e3, 0.01, 50, .01, 0.5e3, 8, fD, True, 4, delays, mags, ntaps, 0, 0x1337 )
-                    # connect blocks and perform 1) bit generation; 2) modulation; 3) receive signal
+                    # connect blocks and perform 1) bit generation; 2) modulation; 3) add channel w/o noise 4) receive signal
                     tb.connect(src, mod, chan2, snk)
                 else:  # this is noised signals
                     # connect blocks and perform 1) bit generation; 2) modulation; 3) add channel; 4) receive signal
